@@ -5,7 +5,7 @@
 #include <sys/msg.h>
 #include <sys/types.h>
 
-
+#define LAST_MESSAGE 255
 
 int main(void)
 {
