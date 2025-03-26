@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
@@ -8,12 +9,11 @@
 int i = 0, j = 0, k = 0;
 
 
-void sigaction_handle(int nsig, siginfo_t* siginfo, void* context) {
+void signal_handle(int nsig) {
     printf("\nCur indexes i=%d, j=%d, k=%d\n", i, j, k);
-    struct sigaction psa;
-    psa.sa_handler = SIG_DFL;
-    sigaction(SIGINT, &psa, NULL);
+    (void)signal(SIGINT, SIG_DFL);
 }
+
 
 int main(int argc, char **argv) {
     int n = 1000;
@@ -37,16 +37,13 @@ int main(int argc, char **argv) {
     }
     
 
-    struct sigaction psa;
-    psa.sa_sigaction = sigaction_handle;
-    sigaction(SIGINT, &psa, NULL);
+    signal(SIGINT, signal_handle);
     
     for (i = 0; i < n; i++) {
         for (j = 0; j < n; j++) {
             for (k = 0; k < n; k++) {
                 C[i][j] += A[i][k] * B[k][j];
             }
-
             sleep(1);
         }
     }
